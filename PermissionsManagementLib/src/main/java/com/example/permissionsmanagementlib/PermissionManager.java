@@ -39,7 +39,7 @@ public class PermissionManager {
         this.permissions = permissions;
         this.permissionsCallback = getDefaultCallback();
 
-        // Register permission request launcher for multiple permissions
+        // Register permission request launcher for multiple permissions.
         requestPermissionsLauncher = activity.registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 result -> {

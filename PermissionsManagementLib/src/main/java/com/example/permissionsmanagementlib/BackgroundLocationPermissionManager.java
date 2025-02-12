@@ -35,9 +35,11 @@ public class BackgroundLocationPermissionManager {
                         permissionsCallback.onPermissionsGranted();
                     }
                     else if (activity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+                        // Show permission rationale if user denied the permission
                         showPermissionRationale();
                     }
                     else {
+                        // Show settings dialog if user denied the permission and checked "Don't ask again"
                         showSettingsDialog();
                     }
                 }
