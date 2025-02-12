@@ -143,6 +143,7 @@ public class PermissionManager {
                 .setMessage(rationaleMessage + "\n" + PermissionUtils.permissionsStringGenerator(deniedPermissions))
                 .setPositiveButton("Allow", (dialog, which) -> requestPermissionsLauncher.launch(deniedPermissions.toArray(new String[0])))
                 .setNegativeButton("Deny", (dialog, which) -> permissionsCallback.onPermissionsDenied(deniedPermissions))
+                .setCancelable(false)
                 .show();
     }
 
@@ -152,6 +153,7 @@ public class PermissionManager {
                 .setMessage(settingsMessage)
                 .setPositiveButton("Go to Settings", (dialog, which) -> openAppSettings())
                 .setNegativeButton("Cancel", (dialog, which) -> permissionsCallback.onPermissionsDenied(getDeniedPermissions()))
+                .setCancelable(false)
                 .show();
     }
 
