@@ -10,7 +10,31 @@ PermissionsManagementLib is an Android library designed to simplify permission m
 - **Background Location Permission Management:** Specifically handles background location requests with user guidance. Supports <ins>Android 10 (API 29) and above</ins>, ensuring compatibility with modern permission requirements.
 - **Customizable Rationale & Settings Dialogs:** Display messages for denied permissions.
 - **Automatic Settings Navigation:** Guides users to enable permissions in settings when required.
-- **Permission Callbacks:** Handle granted or denied permissions seamlessly.
+- **Permission Callbacks:** Handle granted or denied permissions seamlessly. The library provides a default callback that automatically displays a <ins>Toast message</ins> indicating whether permissions were granted or denied, making it easy to integrate without additional setup.
+
+## How It Works
+1) **Checks Permission Status:** Verifies if permissions are already granted.
+2) **Requests Permissions:** Uses ActivityResultLauncher for modern permission handling.
+3) **Handles Denied Permissions:**
+    - If denied, shows rationale dialog or directs users to settings.
+    - Calls onPermissionsGranted() or onPermissionsDenied().
+
+### General Permissions 
+ - **Rationale Dialog:** This dialog informs users why certain permissions are required before requesting them.
+ - **Settings Dialog:** If the user has permanently denied permissions, this dialog prompts them to enable them manually via the app settings.
+<div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/41d31426-f44a-4d28-a47f-15b71dd58f94" alt="Image 1" style="width: 22%; height: 22%;">
+  <img src="https://github.com/user-attachments/assets/9f734895-b933-4948-ae8e-8974fe38ace0" alt="Image 2" style="width: 22%; height: 22%;">
+</div>
+
+### Background Location
+- **Settings Dialog (Android 11+):** For devices running **Android 11 (API 30) and above**, background location access must be granted manually in the app settings. This dialog guides users on how to enable it.
+
+<div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/596fc1c8-b0d5-4575-a471-f306bfb4b458" alt="Image 2" style="width: 22%; height: 22%;">
+</div>
+
+### Example Application Video:
 
 ## Setup
 Step 1. Add it in your root `build.gradle` at the end of repositories:
@@ -31,3 +55,125 @@ dependencies {
 ```
 
 ## Usage:
+1) **Add Permissions to AndroidManifest.xml:** Before using the permission manager, you must declare the required permissions in your `AndroidManifest.xml` file.
+
+For General Permissions:
+Add the necessary permissions based on your app’s needs, for example:
+```
+<uses-permission android:name="android.permission.CAMERA"/>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+```
+
+For Background Location Permission:
+If your app requires location access, include the following:
+```
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+```
+
+2) **Initialize permission manager:** Create an instance of `GeneralPermissionManager` and pass the required permissions, or use `BackgroundLocationPermissionManager` to manage background location requests.
+
+GeneralPermissionManager:   
+```
+String[] permissions = {
+    Manifest.permission.CAMERA,
+    Manifest.permission.READ_EXTERNAL_STORAGE
+};
+
+GeneralPermissionManager generalPermissionManager = new GeneralPermissionManager(this, permissions);
+```
+
+BackgroundLocationPermissionManager:
+```
+BackgroundLocationPermissionManager locationPermissionManager = new BackgroundLocationPermissionManager(this);
+```
+
+3) **Define Permission Callbacks (Optional):** Set up callbacks to handle granted and denied permissions.
+
+GeneralPermissionManager:  
+```
+generalPermissionManager.setPermissionsCallback(new PermissionsCallback() {
+    @Override
+    public void onPermissionsGranted() {
+        // Handle permission granted
+        // Youre code
+    }
+
+    @Override
+    public void onPermissionsDenied(List<String> deniedPermissions) {
+        // Handle permission denied
+        // Youre code
+    }
+});
+```
+
+BackgroundLocationPermissionManager:
+```
+locationPermissionManager.setPermissionsCallback(new PermissionsCallback() {
+    @Override
+    public void onPermissionsGranted() {
+        // Handle permission granted
+        // Your code
+    }
+
+    @Override
+    public void onPermissionsDenied(List<String> deniedPermissions) {
+        // Handle permission denied
+        // your code
+    }
+});
+
+```
+
+4) **Customize Rationale & Settings Dialog Messages (Optional):** Define custom messages for the rationale and settings dialogs.
+
+GeneralPermissionManager:  
+```
+generalPermissionManager
+    .setRationaleTitle("App Permissions Needed")
+    .setRationaleMessage("These permissions are required for the app to function correctly.")
+    .setSettingsTitle("Enable Required Permissions")
+    .setSettingsMessage("Please enable the necessary permissions in app settings.");
+```
+
+BackgroundLocationPermissionManager:
+```
+locationPermissionManager
+    .setRationaleTitle("Location Access Required")
+    .setRationaleMessage("We need this permission to track your location.")
+    .setSettingsTitle("Enable Location Permission")
+    .setSettingsMessage("To use this feature, allow background location access in settings.");
+```
+
+5) **Request Permissions:**
+
+GeneralPermissionManager:
+```
+generalPermissionManager.requestPermissions();
+``` 
+
+BackgroundLocationPermissionManager:
+```
+locationPermissionManager.requestBackgroundLocationPermission();
+```
+## License
+```
+Copyright 2025 Lior Avraham
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+
+
+
