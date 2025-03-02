@@ -2,12 +2,17 @@ package com.example.permissionsmanagementlib;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
@@ -33,6 +38,21 @@ public class PermissionUtils {
         toast.show();
     }
 
+    public static PermissionsCallback getDefaultCallback(AppCompatActivity activity, String toastMessage) {
+        return new PermissionsCallback() {
+            @Override
+            public void onPermissionsGranted() {
+                PermissionUtils.showModifyToast(activity, toastMessage, R.drawable.done);
+            }
+
+            @Override
+            public void onPermissionsDenied(List<String> deniedPermissions) {
+                String message = "Permissions denied:\n" + PermissionUtils.permissionsStringGenerator(deniedPermissions);
+                PermissionUtils.showModifyToast(activity, message, R.drawable.undone);
+            }
+        };
+    }
+
     private static String getPermissionName(String permission) {
         return permission.toLowerCase().substring(("android.permission.").length()).replace('_', ' ');
     }
@@ -48,5 +68,14 @@ public class PermissionUtils {
 
         return permissionsString.toString();
     }
+
+    public static void openAppSettings(AppCompatActivity activity, ActivityResultLauncher<Intent> settingsLauncher) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+        intent.setData(uri);
+        settingsLauncher.launch(intent);
+    }
+
+
 
 }

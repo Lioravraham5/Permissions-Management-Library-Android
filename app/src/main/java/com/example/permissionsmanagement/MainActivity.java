@@ -10,7 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.permissionsmanagementlib.BackgroundLocationPermissionManager;
-import com.example.permissionsmanagementlib.PermissionManager;
+import com.example.permissionsmanagementlib.GeneralPermissionManager;
 import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton requestMultiplePermissions_BTN;
     private MaterialButton requestLocationPermissions_BTN;
 
-    private PermissionManager singlePermissionManager;
-    private PermissionManager multiplePermissionsManager;
+    private GeneralPermissionManager singleGeneralPermissionManager;
+    private GeneralPermissionManager multiplePermissionsManager;
 
 
     @Override
@@ -38,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
         requestMultiplePermissions_BTN = findViewById(R.id.requestMultiplePermissions_BTN);
         requestLocationPermissions_BTN = findViewById(R.id.requestLocationPermissions_BTN);
 
-        singlePermissionManager = new PermissionManager(this, new String[]{Manifest.permission.READ_SMS});
+        singleGeneralPermissionManager = new GeneralPermissionManager(this, new String[]{Manifest.permission.READ_SMS});
 
-        multiplePermissionsManager = new PermissionManager(this,
+        multiplePermissionsManager = new GeneralPermissionManager(this,
                 new String[]{Manifest.permission.READ_CONTACTS,
                             Manifest.permission.CAMERA,
                             Manifest.permission.READ_EXTERNAL_STORAGE});
 
-        requestPermission_BTN.setOnClickListener(v -> singlePermissionManager.requestPermissions());
+        requestPermission_BTN.setOnClickListener(v -> singleGeneralPermissionManager.requestPermissions());
         requestMultiplePermissions_BTN.setOnClickListener(v -> multiplePermissionsManager.requestPermissions());
 
 

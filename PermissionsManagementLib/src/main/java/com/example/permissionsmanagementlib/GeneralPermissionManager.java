@@ -3,20 +3,20 @@ package com.example.permissionsmanagementlib;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.provider.Settings;
 import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PermissionManager {
+public class GeneralPermissionManager {
+
+    private final String TOAST_MESSAGE = "Permissions Granted";
 
     // default PermissionRationale messages:
     private String rationaleTitle = "Permissions Required";
@@ -34,7 +34,7 @@ public class PermissionManager {
 
     private PermissionsCallback permissionsCallback;
 
-    public PermissionManager(AppCompatActivity activity, String[] permissions) {
+    public GeneralPermissionManager(AppCompatActivity activity, String[] permissions) {
         this.activity = activity;
         this.permissions = permissions;
         this.permissionsCallback = getDefaultCallback();
@@ -69,18 +69,7 @@ public class PermissionManager {
     }
 
     private PermissionsCallback getDefaultCallback() {
-        return new PermissionsCallback() {
-            @Override
-            public void onPermissionsGranted() {
-                PermissionUtils.showModifyToast(activity, "Permissions granted", R.drawable.done);
-            }
-
-            @Override
-            public void onPermissionsDenied(List<String> deniedPermissions) {
-                String message = "Permissions denied:\n" + PermissionUtils.permissionsStringGenerator(deniedPermissions);
-                PermissionUtils.showModifyToast(activity, message, R.drawable.undone);
-            }
-        };
+        return PermissionUtils.getDefaultCallback(activity, TOAST_MESSAGE);
     }
 
     public void requestPermissions() {
@@ -93,7 +82,7 @@ public class PermissionManager {
 
     private boolean areAllPermissionsGranted() {
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }
@@ -111,7 +100,7 @@ public class PermissionManager {
     private List<String> getDeniedPermissions() {
         List<String> deniedPermissions = new ArrayList<>();
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
                 deniedPermissions.add(permission);
             }
         }
@@ -141,6 +130,7 @@ public class PermissionManager {
         new AlertDialog.Builder(activity)
                 .setTitle(rationaleTitle)
                 .setMessage(rationaleMessage + "\n" + PermissionUtils.permissionsStringGenerator(deniedPermissions))
+                .setIcon(R.drawable.warning)
                 .setPositiveButton("Allow", (dialog, which) -> requestPermissionsLauncher.launch(deniedPermissions.toArray(new String[0])))
                 .setNegativeButton("Deny", (dialog, which) -> permissionsCallback.onPermissionsDenied(deniedPermissions))
                 .setCancelable(false)
@@ -151,35 +141,29 @@ public class PermissionManager {
         new AlertDialog.Builder(activity)
                 .setTitle(settingsTitle)
                 .setMessage(settingsMessage)
-                .setPositiveButton("Go to Settings", (dialog, which) -> openAppSettings())
+                .setIcon(R.drawable.setting)
+                .setPositiveButton("Go to Settings", (dialog, which) -> PermissionUtils.openAppSettings(activity, settingsLauncher))
                 .setNegativeButton("Cancel", (dialog, which) -> permissionsCallback.onPermissionsDenied(getDeniedPermissions()))
                 .setCancelable(false)
                 .show();
     }
 
-    private void openAppSettings() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
-        intent.setData(uri);
-        settingsLauncher.launch(intent);
-    }
-
-    public PermissionManager setRationaleTitle(String rationaleTitle) {
+    public GeneralPermissionManager setRationaleTitle(String rationaleTitle) {
         this.rationaleTitle = rationaleTitle;
         return this;
     }
 
-    public PermissionManager setRationaleMessage(String rationaleMessage) {
+    public GeneralPermissionManager setRationaleMessage(String rationaleMessage) {
         this.rationaleMessage = rationaleMessage;
         return this;
     }
 
-    public PermissionManager setSettingsMessage(String settingsMessage) {
+    public GeneralPermissionManager setSettingsMessage(String settingsMessage) {
         this.settingsMessage = settingsMessage;
         return this;
     }
 
-    public PermissionManager setSettingsTitle(String settingsTitle) {
+    public GeneralPermissionManager setSettingsTitle(String settingsTitle) {
         this.settingsTitle = settingsTitle;
         return this;
     }

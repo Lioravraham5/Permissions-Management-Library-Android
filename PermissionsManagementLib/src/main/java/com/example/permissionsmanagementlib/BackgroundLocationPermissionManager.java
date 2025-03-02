@@ -4,19 +4,31 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.Settings;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
 
 import java.util.Collections;
-import java.util.List;
 
 public class BackgroundLocationPermissionManager {
+
+    private final String TOAST_MESSAGE = "Background Location Permission Granted";
+
+    // default PermissionRationale messages:
+    private String rationaleTitle = "Background location Permission Required";
+    private String rationaleMessage = "This permission is required for the app to function properly.";
+
+    // default SettingsDialog messages:
+    private String settingsTitle = "Background Location Permission Required";
+    private String settingsMessage = "To allow background location access, follow these steps:\n\n" +
+            "1. Open App \"Settings\".\n" +
+            "2. Navigate to \"Permissions\".\n" +
+            "3. Select \"Location\".\n" +
+            "4. Choose \"Allow all the time\".\n\n" +
+            "This ensures the app can access your location even when it's running in the background.";
 
     private final AppCompatActivity activity;
     private final ActivityResultLauncher<String[]> requestPermissionsLauncher;
@@ -52,22 +64,13 @@ public class BackgroundLocationPermissionManager {
     }
 
     private PermissionsCallback getDefaultCallback() {
-        return new PermissionsCallback() {
-            @Override
-            public void onPermissionsGranted() {
-                PermissionUtils.showModifyToast(activity, "Background location permission granted", R.drawable.done);
-            }
-
-            @Override
-            public void onPermissionsDenied(List<String> deniedPermissions) {
-                String message = "Permissions denied:\n" + PermissionUtils.permissionsStringGenerator(deniedPermissions);
-                PermissionUtils.showModifyToast(activity, message, R.drawable.undone);
-            }
-        };
+        return PermissionUtils.getDefaultCallback(activity, TOAST_MESSAGE);
     }
 
+
+
     public void requestBackgroundLocationPermission() {
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             permissionsCallback.onPermissionsGranted();
             return;
         }
@@ -96,12 +99,12 @@ public class BackgroundLocationPermissionManager {
     }
 
     private boolean isForegroundLocationGranted() {
-        return ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void checkPermissionStatus() {
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             permissionsCallback.onPermissionsGranted();
         } else {
             permissionsCallback.onPermissionsDenied(Collections.singletonList(Manifest.permission.ACCESS_BACKGROUND_LOCATION));
@@ -110,10 +113,10 @@ public class BackgroundLocationPermissionManager {
 
     private void showSettingsDialog() {
         new AlertDialog.Builder(activity)
-                .setTitle("Background Location Required")
-                .setMessage("To allow background location access, enable it in app settings.\n\n" +
-                        "On the page that opens - click on PERMISSIONS, then on LOCATION and then select \"Allow all the time\"")
-                .setPositiveButton("Go to Settings", (dialog, which) -> openAppSettings())
+                .setTitle(settingsTitle)
+                .setMessage(settingsMessage)
+                .setIcon(R.drawable.setting)
+                .setPositiveButton("Go to Settings", (dialog, which) -> PermissionUtils.openAppSettings(activity,settingsLauncher))
                 .setNegativeButton("Cancel", (dialog, which) -> permissionsCallback.onPermissionsDenied(Collections.singletonList(Manifest.permission.ACCESS_BACKGROUND_LOCATION)))
                 .setCancelable(false)
                 .show();
@@ -121,8 +124,9 @@ public class BackgroundLocationPermissionManager {
 
     private void showPermissionRationale() {
         new AlertDialog.Builder(activity)
-                .setTitle("Background location Permission Required")
-                .setMessage("This permission is required for the app to function properly.")
+                .setTitle(rationaleTitle)
+                .setMessage(rationaleMessage)
+                .setIcon(R.drawable.warning)
                 .setPositiveButton("Allow", (dialog, which) ->
                         requestPermissionsLauncher.launch(new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -132,14 +136,28 @@ public class BackgroundLocationPermissionManager {
                 .show();
     }
 
-    private void openAppSettings() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
-        intent.setData(uri);
-        settingsLauncher.launch(intent);
-    }
 
     public void setPermissionsCallback(PermissionsCallback permissionsCallback) {
         this.permissionsCallback = permissionsCallback;
+    }
+
+    public BackgroundLocationPermissionManager setRationaleTitle(String rationaleTitle) {
+        this.rationaleTitle = rationaleTitle;
+        return this;
+    }
+
+    public BackgroundLocationPermissionManager setRationaleMessage(String rationaleMessage) {
+        this.rationaleMessage = rationaleMessage;
+        return this;
+    }
+
+    public BackgroundLocationPermissionManager setSettingsTitle(String settingsTitle) {
+        this.settingsTitle = settingsTitle;
+        return this;
+    }
+
+    public BackgroundLocationPermissionManager setSettingsMessage(String settingsMessage) {
+        this.settingsMessage = settingsMessage;
+        return this;
     }
 }
