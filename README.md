@@ -3,7 +3,8 @@
 [![API](https://img.shields.io/badge/API-26%2B-green.svg?style=flat)]()
 
 # PermissionsManagementLib Library
-PermissionsManagementLib is an Android library designed to simplify permission management in Android applications. It helps developers request, handle, and manage app permissions effortlessly, including general and background location permissions.
+- PermissionsManagementLib is an Android library designed to simplify permission management in Android applications. It helps developers request, handle, and manage app permissions effortlessly, including general and background location permissions.
+- **Developer Documentation:** [Read the Docs](https://lioravraham5.github.io/Permissions-Management-Library-Android/)
 
 ## Features
 - **Easy Permission Handling:** Request multiple permissions with a simple API
