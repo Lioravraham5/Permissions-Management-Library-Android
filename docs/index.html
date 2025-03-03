@@ -1,182 +1,105 @@
-![GitHub](https://img.shields.io/github/license/Lioravraham5/Permissions-Management-Library-Android)
-[![](https://jitpack.io/v/Lioravraham5/Permissions-Management-Library-Android.svg)](https://jitpack.io/#Lioravraham5/Permissions-Management-Library-Android)
-[![API](https://img.shields.io/badge/API-26%2B-green.svg?style=flat)]()
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PermissionsManagementLib</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
 
-# PermissionsManagementLib Library
-PermissionsManagementLib is an Android library designed to simplify permission management in Android applications. It helps developers request, handle, and manage app permissions effortlessly, including general and background location permissions.
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">PermissionsManagementLib</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#setup">Setup</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#usage">Usage</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#license">License</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-## Features
-- **Easy Permission Handling:** Request multiple permissions with a simple API
-- **Background Location Permission Management:** Specifically handles background location requests with user guidance. Supports <ins>Android 10 (API 29) and above</ins>, ensuring compatibility with modern permission requirements.
-- **Customizable Rationale & Settings Dialogs:** Display messages for denied permissions.
-- **Automatic Settings Navigation:** Guides users to enable permissions in settings when required.
-- **Permission Callbacks:** Handle granted or denied permissions seamlessly. The library provides a default callback that automatically displays a <ins>Toast message</ins> indicating whether permissions were granted or denied, making it easy to integrate without additional setup.
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container text-center">
+            <h1>PermissionsManagementLib</h1>
+            <p class="lead">A simple way to manage permissions in Android apps.</p>
+            <a href="https://jitpack.io/#Lioravraham5/Permissions-Management-Library-Android" class="btn btn-light btn-lg">Get Started</a>
+        </div>
+    </header>
 
-## How It Works
-1) **Checks Permission Status:** Verifies if permissions are already granted.
-2) **Requests Permissions:** Uses ActivityResultLauncher for modern permission handling.
-3) **Handles Denied Permissions:**
-    - If denied, shows rationale dialog or directs users to settings.
-    -  Automatically calls onPermissionsGranted() or onPermissionsDenied() using either the default callback (which shows a toast message) or a custom callback provided by the developer.
+    <!-- Features Section -->
+    <section id="features" class="container my-5">
+        <h2 class="text-center">Features</h2>
+        <ul class="list-group">
+            <li class="list-group-item">✔️ Easy Permission Handling</li>
+            <li class="list-group-item">✔️ Background Location Permission Management</li>
+            <li class="list-group-item">✔️ Customizable Rationale & Settings Dialogs</li>
+            <li class="list-group-item">✔️ Automatic Settings Navigation</li>
+            <li class="list-group-item">✔️ Built-in Toast Messages</li>
+        </ul>
+    </section>
 
-### General Permissions 
- - **Rationale Dialog:** This dialog informs users why certain permissions are required before requesting them.
- - **Settings Dialog:** If the user has permanently denied permissions, this dialog prompts them to enable them manually via the app settings.
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/41d31426-f44a-4d28-a47f-15b71dd58f94" alt="Image 1" style="width: 22%; height: 22%;">
-  <img src="https://github.com/user-attachments/assets/9f734895-b933-4948-ae8e-8974fe38ace0" alt="Image 2" style="width: 22%; height: 22%;">
-</div>
+    <!-- Video Section -->
+    <section class="container my-5 text-center">
+        <h2>Example Application Video</h2>
+        <video width="640" height="360" controls>
+            <source src="https://github.com/user-attachments/assets/72f6cc3f-4618-4887-b26d-04d931383cf1" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
 
-### Background Location
-- **Settings Dialog (Android 11+):** For devices running **Android 11 (API 30) and above**, background location access must be granted manually in the app settings. This dialog guides users on how to enable it.
-- **Android 10 (API 29) & Below:** First displays a rationale dialog explaining the need for background location. If denied, users are directed to app settings.
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/c0c7d580-04f7-4846-a818-d68311d1fe39" alt="Image 2" style="width: 22%; height: 22%;">
-  <img src="https://github.com/user-attachments/assets/9d49b687-98f2-4493-85d4-8b1cb3de5dc8" alt="Image 2" style="width: 22%; height: 22%;">
-</div>
-
-### Example Application Video:
-https://github.com/user-attachments/assets/72f6cc3f-4618-4887-b26d-04d931383cf1
-
-## Setup
-Step 1. Add it in your root `build.gradle` at the end of repositories:
-```
-allprojects {
+    <!-- Setup Section -->
+    <section id="setup" class="container my-5">
+        <h2>Setup</h2>
+        <p>Add the following to your root `build.gradle`:</p>
+        <pre><code>allprojects {
     repositories {
-        // other repositories
-        maven { url = uri("https://jitpack.io" )}
+        maven { url = uri("https://jitpack.io") }
     }
-}
-```
+}</code></pre>
+        <p>Add the dependency:</p>
+        <pre><code>dependencies {
+    implementation ("com.github.Lioravraham5:Permissions-Management-Library-Android:1.0.0")
+}</code></pre>
+    </section>
 
-Step 2. Add the dependency:
-```
-dependencies {
-  implementation ("com.github.Lioravraham5:Permissions-Management-Library-Android:1.0.0")
-}
-```
+    <!-- Usage Section -->
+    <section id="usage" class="container my-5">
+        <h2>Usage</h2>
+        <p>1️⃣ **Add Permissions to `AndroidManifest.xml`**</p>
+        <pre><code>&lt;uses-permission android:name="android.permission.CAMERA"/&gt;
+&lt;uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/&gt;</code></pre>
 
-## Usage:
-**Step 1: Add Permissions to AndroidManifest.xml:** Before using the permission manager, you must declare the required permissions in your `AndroidManifest.xml` file.
-
-For General Permissions:
-Add the necessary permissions based on your app’s needs, for example:
-```
-<uses-permission android:name="android.permission.CAMERA"/>
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-```
-
-For Background Location Permission:
-If your app requires location access, include the following:
-```
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-```
-
-**Step 2: Initialize permission manager:** Create an instance of `GeneralPermissionManager` and pass the required permissions, or use `BackgroundLocationPermissionManager` to manage background location requests.
-
-GeneralPermissionManager:   
-```
-String[] permissions = {
+        <p>2️⃣ **Initialize Permission Manager**</p>
+        <pre><code>String[] permissions = {
     Manifest.permission.CAMERA,
     Manifest.permission.READ_EXTERNAL_STORAGE
 };
+GeneralPermissionManager generalPermissionManager = new GeneralPermissionManager(this, permissions);</code></pre>
 
-GeneralPermissionManager generalPermissionManager = new GeneralPermissionManager(this, permissions);
-```
+        <p>3️⃣ **Request Permissions**</p>
+        <pre><code>generalPermissionManager.requestPermissions();</code></pre>
+    </section>
 
-BackgroundLocationPermissionManager:
-```
-BackgroundLocationPermissionManager locationPermissionManager = new BackgroundLocationPermissionManager(this);
-```
+    <!-- License Section -->
+    <section id="license" class="container my-5">
+        <h2>License</h2>
+        <p>Licensed under the Apache License, Version 2.0.</p>
+    </section>
 
-**Step 3: Define Permission Callbacks (Optional):** Set up callbacks to handle granted and denied permissions.
+    <footer class="bg-primary text-white text-center py-3">
+        &copy; 2025 Lior Avraham - PermissionsManagementLib
+    </footer>
 
-GeneralPermissionManager:  
-```
-generalPermissionManager.setPermissionsCallback(new PermissionsCallback() {
-    @Override
-    public void onPermissionsGranted() {
-        // Handle permission granted
-        // Youre code
-    }
-
-    @Override
-    public void onPermissionsDenied(List<String> deniedPermissions) {
-        // Handle permission denied
-        // Youre code
-    }
-});
-```
-
-BackgroundLocationPermissionManager:
-```
-locationPermissionManager.setPermissionsCallback(new PermissionsCallback() {
-    @Override
-    public void onPermissionsGranted() {
-        // Handle permission granted
-        // Your code
-    }
-
-    @Override
-    public void onPermissionsDenied(List<String> deniedPermissions) {
-        // Handle permission denied
-        // your code
-    }
-});
-
-```
-
-**Step 4: Customize Rationale & Settings Dialog Messages (Optional):** Define custom messages for the rationale and settings dialogs.
-
-GeneralPermissionManager:  
-```
-generalPermissionManager
-    .setRationaleTitle("App Permissions Needed")
-    .setRationaleMessage("These permissions are required for the app to function correctly.")
-    .setSettingsTitle("Enable Required Permissions")
-    .setSettingsMessage("Please enable the necessary permissions in app settings.");
-```
-
-BackgroundLocationPermissionManager:
-```
-locationPermissionManager
-    .setRationaleTitle("Location Access Required")
-    .setRationaleMessage("We need this permission to track your location.")
-    .setSettingsTitle("Enable Location Permission")
-    .setSettingsMessage("To use this feature, allow background location access in settings.");
-```
-
-**Step 5: Request Permissions:**
-
-GeneralPermissionManager:
-```
-generalPermissionManager.requestPermissions();
-``` 
-
-BackgroundLocationPermissionManager:
-```
-locationPermissionManager.requestBackgroundLocationPermission();
-```
-## License
-```
-Copyright 2025 Lior Avraham
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
-
-
-
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
