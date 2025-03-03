@@ -17,7 +17,7 @@ PermissionsManagementLib is an Android library designed to simplify permission m
 2) **Requests Permissions:** Uses ActivityResultLauncher for modern permission handling.
 3) **Handles Denied Permissions:**
     - If denied, shows rationale dialog or directs users to settings.
-    - Calls onPermissionsGranted() or onPermissionsDenied().
+    -  Automatically calls onPermissionsGranted() or onPermissionsDenied() using either the default callback (which shows a toast message) or a custom callback provided by the developer.
 
 ### General Permissions 
  - **Rationale Dialog:** This dialog informs users why certain permissions are required before requesting them.
@@ -29,9 +29,10 @@ PermissionsManagementLib is an Android library designed to simplify permission m
 
 ### Background Location
 - **Settings Dialog (Android 11+):** For devices running **Android 11 (API 30) and above**, background location access must be granted manually in the app settings. This dialog guides users on how to enable it.
-
+- **Android 10 (API 29) & Below:** First displays a rationale dialog explaining the need for background location. If denied, users are directed to app settings.
 <div style="display: flex; justify-content: space-between; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/596fc1c8-b0d5-4575-a471-f306bfb4b458" alt="Image 2" style="width: 22%; height: 22%;">
+  <img src="https://github.com/user-attachments/assets/c0c7d580-04f7-4846-a818-d68311d1fe39" alt="Image 2" style="width: 22%; height: 22%;">
+  <img src="https://github.com/user-attachments/assets/9d49b687-98f2-4493-85d4-8b1cb3de5dc8" alt="Image 2" style="width: 22%; height: 22%;">
 </div>
 
 ### Example Application Video:
