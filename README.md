@@ -57,7 +57,7 @@ dependencies {
 ```
 
 ## Usage:
-1) **Add Permissions to AndroidManifest.xml:** Before using the permission manager, you must declare the required permissions in your `AndroidManifest.xml` file.
+**Step 1: Add Permissions to AndroidManifest.xml:** Before using the permission manager, you must declare the required permissions in your `AndroidManifest.xml` file.
 
 For General Permissions:
 Add the necessary permissions based on your app’s needs, for example:
@@ -74,7 +74,7 @@ If your app requires location access, include the following:
 <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 ```
 
-2) **Initialize permission manager:** Create an instance of `GeneralPermissionManager` and pass the required permissions, or use `BackgroundLocationPermissionManager` to manage background location requests.
+**Step 2: Initialize permission manager:** Create an instance of `GeneralPermissionManager` and pass the required permissions, or use `BackgroundLocationPermissionManager` to manage background location requests.
 
 GeneralPermissionManager:   
 ```
@@ -91,7 +91,7 @@ BackgroundLocationPermissionManager:
 BackgroundLocationPermissionManager locationPermissionManager = new BackgroundLocationPermissionManager(this);
 ```
 
-3) **Define Permission Callbacks (Optional):** Set up callbacks to handle granted and denied permissions.
+**Step 3: Define Permission Callbacks (Optional):** Set up callbacks to handle granted and denied permissions.
 
 GeneralPermissionManager:  
 ```
@@ -128,7 +128,7 @@ locationPermissionManager.setPermissionsCallback(new PermissionsCallback() {
 
 ```
 
-4) **Customize Rationale & Settings Dialog Messages (Optional):** Define custom messages for the rationale and settings dialogs.
+**Step 4: Customize Rationale & Settings Dialog Messages (Optional):** Define custom messages for the rationale and settings dialogs.
 
 GeneralPermissionManager:  
 ```
@@ -148,7 +148,7 @@ locationPermissionManager
     .setSettingsMessage("To use this feature, allow background location access in settings.");
 ```
 
-5) **Request Permissions:**
+**Step 5: Request Permissions:**
 
 GeneralPermissionManager:
 ```
