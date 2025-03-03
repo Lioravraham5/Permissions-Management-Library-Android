@@ -36,6 +36,10 @@ PermissionsManagementLib is an Android library designed to simplify permission m
 </div>
 
 ### Example Application Video:
+<video width="640" height="360" controls>
+  <source src="https://firebasestorage.googleapis.com/v0/b/videosads-11664.firebasestorage.app/o/examplesVideosApps%2FpermissionsLibraryVideo.mp4?alt=media&token=ceb090c2-b326-422c-999e-62694b2561bc" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 ## Setup
 Step 1. Add it in your root `build.gradle` at the end of repositories:
